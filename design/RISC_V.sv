@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module riscv #(
+module RISC_V #(
     parameter DATA_W = 32
 ) (
     input logic clk,

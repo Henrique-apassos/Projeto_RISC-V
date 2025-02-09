@@ -18,7 +18,7 @@ module tb_top;
   localparam CLKPERIOD = 10;
   localparam CLKDELAY = CLKPERIOD / 2;
 
-  riscv riscV (
+  RISC_V riscV (
       .clk(tb_clk),
       .reset(reset),
       .WB_Data(tb_WB_Data),

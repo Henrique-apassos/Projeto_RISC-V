@@ -19,4 +19,4 @@
 ./../design/instructionmemory.sv
 ./../design/Datapath.sv
 ./../design/RISC_V.sv
-./tb_top.sv
+./../verif/tb_top.sv
