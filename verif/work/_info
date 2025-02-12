@@ -11,7 +11,7 @@ cModel Technology
 Z0 dC:/Users/Henrique/Documents/Projeto_RISC-V/verif
 vadder
 Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
-Z2 !s110 1739063231
+Z2 !s110 1739071763
 !i10b 1
 !s100 J@Bf42a<9Q9R;nJSZl2>B2
 Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
@@ -28,7 +28,7 @@ Z7 OV;L;2020.1;71
 r1
 !s85 0
 31
-Z8 !s108 1739063231.000000
+Z8 !s108 1739071763.000000
 !s107 ./../verif/tb_top.sv|./../design/RISC_V.sv|./../design/Datapath.sv|./../design/instructionmemory.sv|./../design/datamemory.sv|./../design/mux4.sv|./../design/mux2.sv|./../design/imm_Gen.sv|./../design/HazardDetection.sv|./../design/ForwardingUnit.sv|./../design/flopr.sv|./../design/Controller.sv|./../design/BranchUnit.sv|./../design/ALUController.sv|./../design/alu.sv|./../design/RegFile.sv|./../design/RegPack.sv|./../design/Memoria32Data.sv|./../design/Memoria32.sv|./../design/ramOnChipData.v|./../design/ramOnChip32.v|./../design/adder.sv|
 Z9 !s90 -reportprogress|300|-f|compile_verilog|
 !i113 1

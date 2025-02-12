@@ -1,30 +1,7 @@
-# Compile of adder.sv was successful.
-# Compile of alu.sv was successful.
-# Compile of ALUController.sv was successful.
-# Compile of BranchUnit.sv was successful.
-# Compile of Controller.sv was successful.
-# Compile of datamemory.sv was successful.
-# Compile of Datapath.sv was successful with warnings.
-# Compile of flopr.sv was successful.
-# Compile of ForwardingUnit.sv was successful.
-# Compile of HazardDetection.sv was successful.
-# Compile of imm_Gen.sv was successful.
-# Compile of instructionmemory.sv was successful.
-# Compile of Memoria32.sv was successful.
-# Compile of Memoria32Data.sv was successful.
-# Compile of mux2.sv was successful.
-# Compile of mux4.sv was successful.
-# Compile of ramOnChip32.v was successful.
-# Compile of ramOnChipData.v was successful.
-# Compile of RegFile.sv was successful.
-# Compile of RegPack.sv was successful.
-# Compile of RISC_V.sv was successful.
-# Compile of tb_top.sv was successful.
-# 22 compiles, 0 failed with no errors.
 do runtb_top
 # ** Warning: (vlib-34) Library already exists at "work".
 # Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
-# Start time: 22:07:11 on Feb 08,2025
+# Start time: 00:29:23 on Feb 09,2025
 # vlog -reportprogress 300 -f compile_verilog 
 # -- Compiling module adder
 # -- Compiling module ramOnChip32
@@ -53,10 +30,10 @@ do runtb_top
 # 
 # Top level modules:
 # 	tb_top
-# End time: 22:07:11 on Feb 08,2025, Elapsed time: 0:00:00
+# End time: 00:29:23 on Feb 09,2025, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # vsim -gui -L altera_mf_ver work.tb_top 
-# Start time: 22:07:11 on Feb 08,2025
+# Start time: 00:29:23 on Feb 09,2025
 # Loading sv_std.std
 # Loading work.tb_top
 # Loading work.RISC_V
@@ -140,19 +117,28 @@ do runtb_top
 # Time: 0  Instance: tb_top.riscV.dp.data_mem.mem32.memBlock2.altsyncram_component.m_default.altsyncram_inst
 # Warning: read_during_write_mode_mixed_ports is assumed as               OLD_DATA
 # Time: 0  Instance: tb_top.riscV.dp.data_mem.mem32.memBlock3.altsyncram_component.m_default.altsyncram_inst
-#                   45: Register [ 6] written with value: [00000000] | [         0]
+#                   35: Memory [  1] read with value: [xxxxxxxx] | [         x]
 # 
-#                   55: Memory [  0] read with value: [xxxxxxxx] | [         x]
+#                   35: Memory [  1] read with value: [00000201] | [       513]
 # 
-#                   55: Memory [  0] read with value: [00000201] | [       513]
+#                   40: Memory [  1] read with value: [00000002] | [         2]
 # 
-#                   65: Register [ 9] written with value: [00000201] | [       513]
+#                   45: Memory [  8] read with value: [00000002] | [         2]
+# 
+#                   45: Register [ 4] written with value: [00000002] | [         2]
+# 
+#                   50: Memory [  8] read with value: [00000000] | [         0]
+# 
+#                   55: Memory [  4] read with value: [00000000] | [         0]
+# 
+#                   55: Register [10] written with value: [00000000] | [         0]
+# 
+#                   65: Register [11] written with value: [00000000] | [         0]
 # 
 # ** Note: $stop    : ./../verif/tb_top.sv(43)
 #    Time: 510 ns  Iteration: 0  Instance: /tb_top
 # Break in Module tb_top at ./../verif/tb_top.sv line 43
 restart
-# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
 run -all
 # GetModuleFileName: Não foi possível encontrar o módulo especificado.
 # 
@@ -179,46 +165,66 @@ run -all
 # 
 #                   40: Memory [  1] read with value: [00000002] | [         2]
 # 
+#                   45: Memory [  8] read with value: [00000002] | [         2]
+# 
 #                   45: Register [ 4] written with value: [00000002] | [         2]
 # 
-#                   65: Memory [  0] written with value: [00000000] | [         0]
+#                   50: Memory [  8] read with value: [00000000] | [         0]
 # 
-#                   65: Register [ 5] written with value: [00000000] | [         0]
+#                   55: Memory [  4] read with value: [00000000] | [         0]
 # 
-#                   75: Memory [  0] read with value: [00000002] | [         2]
+#                   55: Register [10] written with value: [00000000] | [         0]
 # 
-#                   75: Memory [  0] read with value: [00000201] | [       513]
-# 
-#                   80: Memory [  0] read with value: [00000000] | [         0]
-# 
-#                   85: Register [ 6] written with value: [00000000] | [         0]
-# 
-#                   95: Register [ 7] written with value: [00000004] | [         4]
-# 
-#                  105: Register [ 7] written with value: [00000006] | [         6]
-# 
-#                  145: Register [ 7] written with value: [00000008] | [         8]
-# 
-#                  185: Register [ 7] written with value: [0000000a] | [        10]
-# 
-#                  225: Register [ 7] written with value: [0000000c] | [        12]
-# 
-#                  265: Register [ 7] written with value: [0000000e] | [        14]
-# 
-#                  305: Register [ 7] written with value: [00000010] | [        16]
-# 
-#                  345: Register [ 7] written with value: [00000012] | [        18]
-# 
-#                  385: Register [ 7] written with value: [00000014] | [        20]
-# 
-#                  425: Register [ 7] written with value: [00000016] | [        22]
-# 
-#                  465: Register [ 7] written with value: [00000018] | [        24]
-# 
-#                  505: Register [ 7] written with value: [0000001a] | [        26]
+#                   65: Register [11] written with value: [00000000] | [         0]
 # 
 # ** Note: $stop    : ./../verif/tb_top.sv(43)
 #    Time: 510 ns  Iteration: 0  Instance: /tb_top
 # Break in Module tb_top at ./../verif/tb_top.sv line 43
-# End time: 22:11:14 on Feb 08,2025, Elapsed time: 0:04:03
+restart
+run -all
+# GetModuleFileName: Não foi possível encontrar o módulo especificado.
+# 
+# 
+# Warning: read_during_write_mode_mixed_ports is assumed as               OLD_DATA
+# Time: 0  Instance: tb_top.riscV.dp.instr_mem.meminst.memBlock0.altsyncram_component.m_default.altsyncram_inst
+# Warning: read_during_write_mode_mixed_ports is assumed as               OLD_DATA
+# Time: 0  Instance: tb_top.riscV.dp.instr_mem.meminst.memBlock1.altsyncram_component.m_default.altsyncram_inst
+# Warning: read_during_write_mode_mixed_ports is assumed as               OLD_DATA
+# Time: 0  Instance: tb_top.riscV.dp.instr_mem.meminst.memBlock2.altsyncram_component.m_default.altsyncram_inst
+# Warning: read_during_write_mode_mixed_ports is assumed as               OLD_DATA
+# Time: 0  Instance: tb_top.riscV.dp.instr_mem.meminst.memBlock3.altsyncram_component.m_default.altsyncram_inst
+# Warning: read_during_write_mode_mixed_ports is assumed as               OLD_DATA
+# Time: 0  Instance: tb_top.riscV.dp.data_mem.mem32.memBlock0.altsyncram_component.m_default.altsyncram_inst
+# Warning: read_during_write_mode_mixed_ports is assumed as               OLD_DATA
+# Time: 0  Instance: tb_top.riscV.dp.data_mem.mem32.memBlock1.altsyncram_component.m_default.altsyncram_inst
+# Warning: read_during_write_mode_mixed_ports is assumed as               OLD_DATA
+# Time: 0  Instance: tb_top.riscV.dp.data_mem.mem32.memBlock2.altsyncram_component.m_default.altsyncram_inst
+# Warning: read_during_write_mode_mixed_ports is assumed as               OLD_DATA
+# Time: 0  Instance: tb_top.riscV.dp.data_mem.mem32.memBlock3.altsyncram_component.m_default.altsyncram_inst
+#                   35: Memory [  0] read with value: [xxxxxxxx] | [         x]
+# 
+#                   35: Memory [  0] read with value: [00000201] | [       513]
+# 
+#                   45: Memory [  4] read with value: [00000201] | [       513]
+# 
+#                   45: Register [10] written with value: [00000201] | [       513]
+# 
+#                   50: Memory [  4] read with value: [00000000] | [         0]
+# 
+#                   55: Register [11] written with value: [00000000] | [         0]
+# 
+#                   75: Register [ 5] written with value: [00000201] | [       513]
+# 
+#                   85: Memory [ 24] written with value: [00000201] | [       513]
+# 
+#                   85: Register [10] written with value: [00000201] | [       513]
+# 
+#                  105: Memory [ 24] written with value: [00000201] | [       513]
+# 
+#                  105: Register [ 5] written with value: [00000201] | [       513]
+# 
+# ** Note: $stop    : ./../verif/tb_top.sv(43)
+#    Time: 510 ns  Iteration: 0  Instance: /tb_top
+# Break in Module tb_top at ./../verif/tb_top.sv line 43
+# End time: 00:42:24 on Feb 09,2025, Elapsed time: 0:13:01
 # Errors: 0, Warnings: 1
