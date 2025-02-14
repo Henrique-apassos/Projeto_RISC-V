@@ -18,6 +18,7 @@ module datamemory #(
   logic [31:0] Datain;
   logic [31:0] Dataout;
   logic [ 3:0] Wr;
+  
 
   Memoria32Data mem32 (
       .raddress(raddress),
@@ -59,7 +60,15 @@ module datamemory #(
     end
 	 else if (MemWrite) begin
       case (Funct3)
-        3'b010: begin  //SW
+        3'b000: begin //SB
+			Wr <= 4'b0001;
+			Datain <= wd[7:0];
+		  end
+		  3'b001: begin //SH
+			Wr <= 4'b0011;
+			Datain <= wd[15:0];
+		  end
+		  3'b010: begin  //SW
           Wr <= 4'b1111;
           Datain <= wd;
         end
