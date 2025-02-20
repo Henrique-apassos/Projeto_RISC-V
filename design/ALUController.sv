@@ -1,10 +1,17 @@
 `timescale 1ns / 1ps
 
+/*
+A unidade de controle (ALUController) vê o Opcode(7 bits) e define qual é a classe das instruções que a ALU fará (ALUOp)
+O ALUController usa então o Funct3 e o Funct7 para refinarem qual é a operação específica dentro da ALU
+Operation é então o código final que a ALU usa para realizar a operação
+Operation é então a operação final da ALU, determinada pela combinação de opcode, Funct3 e Funct7
+*/
+
 module ALUController (
     // Inputs
-    input logic [1:0] ALUOp,  // 2-bit opcode field from the Controller--00: LW/SW/AUIPC; 01:Branch; 10: Rtype/Itype; 11:JAL/LUI
-    input logic [6:0] Funct7,  // bits 25 to 31 da instrução
-    input logic [2:0] Funct3,  // bits 12 a 14 da instrução
+    input logic [1:0] ALUOp,  // classe das instruções que a ALU irá fazer: Load/Store (00); Branch (01); tipo R e I (10); JAl e LUI (11);
+    input logic [6:0] Funct7,  // II- usado para diferenciar variantes de operações  
+    input logic [2:0] Funct3,  // I - usado para diferenciar operações dentro de uma mesma classe de instruções
 
     // Output
     output logic [3:0] Operation  // operação selecionada para a ALU
