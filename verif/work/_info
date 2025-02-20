@@ -11,7 +11,7 @@ cModel Technology
 Z0 dC:/Users/Henrique/Documents/Projeto_RISC-V/verif
 vadder
 Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
-Z2 !s110 1739496280
+Z2 !s110 1740010916
 !i10b 1
 !s100 J@Bf42a<9Q9R;nJSZl2>B2
 Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
@@ -28,7 +28,7 @@ Z7 OV;L;2020.1;71
 r1
 !s85 0
 31
-Z8 !s108 1739496280.000000
+Z8 !s108 1740010916.000000
 !s107 ./../verif/tb_top.sv|./../design/RISC_V.sv|./../design/Datapath.sv|./../design/instructionmemory.sv|./../design/datamemory.sv|./../design/mux4.sv|./../design/mux2.sv|./../design/imm_Gen.sv|./../design/HazardDetection.sv|./../design/ForwardingUnit.sv|./../design/flopr.sv|./../design/Controller.sv|./../design/BranchUnit.sv|./../design/ALUController.sv|./../design/alu.sv|./../design/RegFile.sv|./../design/RegPack.sv|./../design/Memoria32Data.sv|./../design/Memoria32.sv|./../design/ramOnChipData.v|./../design/ramOnChip32.v|./../design/adder.sv|
 Z9 !s90 -reportprogress|300|-f|compile_verilog|
 !i113 1
@@ -37,17 +37,17 @@ valu
 R1
 R2
 !i10b 1
-!s100 5;jTLO[kW=ac=mFLN`]]Z3
+!s100 D?T[CgK=Q06N:Y=XU^V:o0
 R3
-IEY`_Q1gAdWJN:51Loz90B0
+I7<7SfmWegTObf;S]SDmTf0
 R4
 S1
 R0
-R5
+Z11 w1740010078
 8./../design/alu.sv
 F./../design/alu.sv
 !i122 0
-Z11 L0 3 26
+L0 3 34
 R7
 r1
 !s85 0
@@ -61,17 +61,17 @@ vALUController
 R1
 R2
 !i10b 1
-!s100 azUPJOK]ezd8h1Fee]S;c2
+!s100 mDY^`ZeT>3WI^5=gTE>AE0
 R3
-IZo8f^EAAI]CSczI6b7I`U2
+IHzk1Dgd;aF22HKb>dkiOH3
 R4
 S1
 R0
-R5
+R11
 8./../design/ALUController.sv
 F./../design/ALUController.sv
 !i122 0
-R11
+L0 3 44
 R7
 r1
 !s85 0
@@ -86,17 +86,17 @@ vBranchUnit
 R1
 R2
 !i10b 1
-!s100 6mfj04GQ4<NdfP3N3I?:l2
+!s100 YemNVF;P]gaWZ@15VkoWc2
 R3
-IaMaAS@o[?Z0EK3hi9_B5_1
+IzoIO`g3el<Ra88`QHYUVi1
 R4
 S1
 R0
-R5
+R11
 8./../design/BranchUnit.sv
 F./../design/BranchUnit.sv
 !i122 0
-R11
+L0 3 26
 R7
 r1
 !s85 0
@@ -111,17 +111,17 @@ vController
 R1
 R2
 !i10b 1
-!s100 C[Y^@R]M_F`]LH?EUzgMA3
+!s100 o9O;c:I@LB5AlK8^J?7lZ3
 R3
-IRd7c]N4?]JH7:g<NKQM7@2
+IJPBd1cci`9EnllddAJ8XR2
 R4
 S1
 R0
-w1739494261
+w1740010668
 8./../design/Controller.sv
 F./../design/Controller.sv
 !i122 0
-L0 3 36
+L0 3 47
 R7
 r1
 !s85 0
@@ -287,17 +287,17 @@ vimm_Gen
 R1
 R2
 !i10b 1
-!s100 IGz>DzTjc7HSYQOZD30RD1
+!s100 h[A:R>SPVK>]oz_a<k7K?3
 R3
-IoEG2ko6X?GBYe0CTHR3A13
+IA>GYO7EcY:@9]:5WBHM=U3
 R4
 S1
 R0
-w1739495310
+R11
 8./../design/imm_Gen.sv
 F./../design/imm_Gen.sv
 !i122 0
-L0 3 32
+L0 3 38
 R7
 r1
 !s85 0
