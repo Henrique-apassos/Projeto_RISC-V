@@ -9,10 +9,19 @@ module imm_Gen (
   always_comb
     case (inst_code[6:0])
       7'b0000011:  /*I-type load part*/
-      Imm_out = {inst_code[31] ? 20'hFFFFF : 20'b0, inst_code[31:20]};
+        Imm_out = {inst_code[31] ? 20'hFFFFF : 20'b0, inst_code[31:20]};
 		
-		7'b0010011: /*I-type arithmetic part*/
-		Imm_out = {inst_code[31] ? 20'hFFFFF : 20'b0, inst_code[31:20]};
+		  7'b0010011: /*I-type arithmetic part*/
+        case(inst_code[14:12])
+          3'b101: //SRAI, SLLI
+		        Imm_out = {27'b0, inst_code[24:20]}; //O shamt está nas posicoes [24:20] do inst_code
+          3'b001: //SLLI
+            Imm_out = {27'b0, inst_code[24:20]}; //O shamt está nas posicoes [24:20] do inst_code
+          3'b010: //SLTI
+            Imm_out = {{20{inst_code[31]}}, inst_code[31:20]}; //inst_code[31] é o sinal, conservado e repetido para os próximos 20 bits além dos 12 bits do imediato
+          default: // ADDI
+            Imm_out = {{20{inst_code[31]}}, inst_code[31:20]};
+        endcase
 
       7'b0100011:  /*S-type*/
       Imm_out = {inst_code[31] ? 20'hFFFFF : 20'b0, inst_code[31:25], inst_code[11:7]};

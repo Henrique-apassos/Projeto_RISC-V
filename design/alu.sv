@@ -35,11 +35,11 @@ module alu#( //cabeçalho do módulo ALU - define dois parâmetros
         always_comb //bloco para lógica combinacional (Sem clock. Apenas com base nos sinais de entrada)
         begin
             case(Operation) //define diferentes operações para a ALU, dependendo do código da operação no input
-            4'b0000:		// AND
+                4'b0000:		// AND
                     ALUResult = SrcA & SrcB;
 				4'b0001:		//OR
                     ALUResult = SrcA | SrcB;
-            4'b0010:		// ADD
+                4'b0010:		// ADD
                     ALUResult = SrcA + SrcB;
 				4'b0011:		//SUB
                     ALUResult = SrcA - SrcB;
@@ -50,16 +50,16 @@ module alu#( //cabeçalho do módulo ALU - define dois parâmetros
 				4'b0110:		//XOR
                     ALUResult = SrcA ^ SrcB;
 				4'b0111:		//SRAI
-                ALUResult = $signed(SrcA) >>> $signed(SrcB);
-            4'b1000:		// BEQ
-                ALUResult = (SrcA == SrcB) ? 1 : 0; //se forem iguais, retorna 1
-            4'b1001:		// BNE
-                ALUResult = (SrcA != SrcB) ? 1 : 0; //se não forem iguais, retorna 1
+                    ALUResult = $signed(SrcA) >>> $signed(SrcB);
+                4'b1000:		// BEQ
+                    ALUResult = (SrcA == SrcB) ? 1 : 0; //se forem iguais, retorna 1
+                4'b1001:		// BNE
+                    ALUResult = (SrcA != SrcB) ? 1 : 0; //se não forem iguais, retorna 1
 				4'b1010:		// JALR
-                ALUResult = $signed(SrcA) + $signed(SrcB);
-            4'b1011:		// BGE
-                ALUResult = ($signed(SrcA) >= $signed(SrcB)) ? 1 : 0; //se SrcA for maior ou igual a SrcB, retorna 1
-				4'b1100:		//SLT
+                    ALUResult = $signed(SrcA) + $signed(SrcB);
+                4'b1011:		// BGE
+                    ALUResult = ($signed(SrcA) >= $signed(SrcB)) ? 1 : 0; //se SrcA for maior ou igual a SrcB, retorna 1
+				4'b1100:		//SLT and SLTI
                     ALUResult = (SrcA < SrcB) ? 1 : 0; //se SrcA for menor do que SrcB, retorna 1
             default:
                     ALUResult = 0;
