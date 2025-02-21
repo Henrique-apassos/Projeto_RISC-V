@@ -1,20 +1,27 @@
 `timescale 1ns / 1ps
 
-
-//módulo que, com base no Opcode da instrução, determina formato da instrução 
 module imm_Gen (
-    input  logic [31:0] inst_code, //recebe uma instrução de 32 bits
-    output logic [31:0] Imm_out //dependendo do tipo da instrução, gera um valor imediato Imm_out corretamente estendido para 32 bits
+    input  logic [31:0] inst_code,
+    output logic [31:0] Imm_out
 );
 
 
-  always_comb //avalia o opcode da instrução para identificar seu tipo e extrair o imediato corretamente -> cada tipo de instrução manipula o imediato de forma específica 
+  always_comb
     case (inst_code[6:0])
-      7'b0000011:  //Instruções do tipo I possuem o imediato nos bits [31:20]
-        Imm_out = {inst_code[31] ? 20'hFFFFF : 20'b0, inst_code[31:20]}; //se o bit 31(de sinal) for 1, 20 bits com 1 acrescentados ao imediato recebido. Caso seja 0, 20 bits com 0 acrescentados ao imediato.
+      7'b0000011:  /*I-type load part*/
+        Imm_out = {inst_code[31] ? 20'hFFFFF : 20'b0, inst_code[31:20]};
 		
 		  7'b0010011: /*I-type arithmetic part*/
-		  Imm_out = {inst_code[31] ? 20'hFFFFF : 20'b0, inst_code[31:20]};
+        case(inst_code[14:12])
+          3'b101: //SRAI, SLLI
+		        Imm_out = {27'b0, inst_code[24:20]}; //O shamt está nas posicoes [24:20] do inst_code
+          3'b001: //SLLI
+            Imm_out = {27'b0, inst_code[24:20]}; //O shamt está nas posicoes [24:20] do inst_code
+          3'b010: //SLTI
+            Imm_out = {{20{inst_code[31]}}, inst_code[31:20]}; //inst_code[31] é o sinal, conservado e repetido para os próximos 20 bits além dos 12 bits do imediato
+          default: // ADDI
+            Imm_out = {{20{inst_code[31]}}, inst_code[31:20]};
+        endcase
 
       7'b0100011:  /*S-type*/
       Imm_out = {inst_code[31] ? 20'hFFFFF : 20'b0, inst_code[31:25], inst_code[11:7]};
@@ -40,5 +47,3 @@ module imm_Gen (
     endcase
 
 endmodule
-
-
