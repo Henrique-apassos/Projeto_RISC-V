@@ -39,13 +39,13 @@ module alu#( //cabeçalho do módulo ALU - define dois parâmetros
                     ALUResult = SrcA & SrcB;
             4'b0001:        //SUB
                     ALUResult = SrcA - SrcB; 
-            4'b0010:        // ADD
+            4'b0010:        // ADD and ADDI
                     ALUResult = SrcA + SrcB;
             4'b0011:        //OR
                     ALUResult = SrcA | SrcB;
             4'b0100:        //XOR
                     ALUResult = SrcA ^ SrcB;
-            4'b0101:        //SLT (Set Less Than)
+            4'b0101:        //SLT (Set Less Than) and SLTI (Set Less Than Immediate)
                     ALUResult = (SrcA < SrcB) ? 1 : 0; //se SrcA for menor do que SrcB, retorna 1
             4'b1000:        // BEQ
                 ALUResult = (SrcA == SrcB) ? 1 : 0; //se forem iguais, retorna 1
@@ -55,6 +55,12 @@ module alu#( //cabeçalho do módulo ALU - define dois parâmetros
                 ALUResult = ($signed(SrcA) >= $signed(SrcB)) ? 1 : 0; //se SrcA for maior ou igual a SrcB, retorna 1
             4'b1100:      // JALR
                 ALUResult = $signed(SrcA) + $signed(SrcB);
+            4'b1101:    //SLLI
+                    ALUResult = SrcA << SrcB;
+            4'b1110:    //SRLI
+                    ALUResult = SrcA >> SrcB;
+            4'b1111:    //SRAI
+                    ALUResult = $signed(SrcA) >>> $signed(SrcB);
             default:
                     ALUResult = 0;
             endcase
