@@ -2,7 +2,7 @@
 
 import Pipe_Buf_Reg_PKG::*;
 
-module Datapath #(
+module Datapath #( //representa o caminho de dados de um processador com pipeline 
     parameter PC_W = 9,  // Program Counter
     parameter INS_W = 32,  // Instruction Width
     parameter RF_ADDRESS = 5,  // Register File Address
