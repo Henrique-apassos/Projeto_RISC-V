@@ -20,10 +20,10 @@ Seu objetivo é implementar as instruções restantes listadas abaixo:
 
 | # | Instrução | Implementada | Testada | Funcionando |
 |---|-----------|:-----------:|:-------:|:-----------:|
-| 1  | `JAL`     |      ❌     |    ❌    |      ❌      |
-| 2  | `JALR`    |      ❌     |    ❌    |      ❌      |
+| 1  | `JAL`     |      ✅     |    ✅    |      ❌      |
+| 2  | `JALR`    |      ✅     |    ❌    |      ❌      |
 | 3  | `BNE`     |      ✅     |    ❌    |      ❌      |
-| 4  | `BLT`     |      ✅     |    ❌    |      ❌      |
+| 4  | `BLT`     |      ❌     |    ❌    |      ❌      |
 | 5  | `BGE`     |      ✅     |    ❌    |      ❌      |
 | 6  | `LB`      |      ✅     |    ✅    |      ✅      |
 | 7  | `LH`      |      ✅     |    ✅    |      ✅      |
@@ -38,7 +38,7 @@ Seu objetivo é implementar as instruções restantes listadas abaixo:
 | 16 | `SUB`     |      ✅     |    ❌    |      ❌      |
 | 17 | `SLT`     |      ✅     |    ❌    |      ❌      |
 | 18 | `XOR`     |      ✅     |    ❌    |      ❌      |
-| 19 | `OR`      |      ✅     |    ❌    |      ❌      |
+| 19 | `OR`      |      ✅     |    ✅    |      ✅      |
 | 20 | `HALT`    |      ❌     |    ❌    |      ❌      |
 
 ### Observações
