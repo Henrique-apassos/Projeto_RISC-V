@@ -18,6 +18,8 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
     MemWrite,  // Register file or Immediate MUX // Memroy Writing Enable
     MemRead,  // Memroy Reading Enable
     Branch,  // Branch Enable
+    Jump,
+    input  logic [          1:0] JumpRegWriteControl,
     input  logic [          1:0] ALUOp,
     input  logic [ALU_CC_W -1:0] ALU_CC,         // ALU Control Code ( input of the ALU )
     output logic [          6:0] opcode,
@@ -26,8 +28,8 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
     output logic [          1:0] ALUOp_Current,
     output logic [   DATA_W-1:0] WB_Data,        //Result After the last MUX
 
-    // Para depuração no tesbench:
-    output logic [4:0] reg_num,  //número do registrador que foi escrito
+    // Para depuraÃ§Ã£o no tesbench:
+    output logic [4:0] reg_num,  //nÃºmero do registrador que foi escrito
     output logic [DATA_W-1:0] reg_data,  //valor que foi escrito no registrador
     output logic reg_write_sig,  //sinal de escrita no registrador
 
@@ -44,8 +46,8 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
   logic [DATA_W-1:0] ReadData;
   logic [DATA_W-1:0] SrcB, ALUResult;
   logic [DATA_W-1:0] ExtImm, BrImm, Old_PC_Four, BrPC;
-  logic [DATA_W-1:0] WrmuxSrc;
-  logic PcSel;  // mux select / flush signal
+  logic [DATA_W-1:0] WrmuxSrc,Data_Jal;
+  logic PcSel,rdfinal,um;  // mux select / flush signal
   logic [1:0] FAmuxSel;
   logic [1:0] FBmuxSel;
   logic [DATA_W-1:0] FAmux_Result;
@@ -65,7 +67,7 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
   );
   mux2 #(9) pcmux (
       PCPlus4,
-      BrPC[PC_W-1:0],
+      BrPC,
       PcSel,
       Next_PC
   );
@@ -74,6 +76,7 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       reset,
       Next_PC,
       Reg_Stall,
+      Pcsel,
       PC
   );
   instructionmemory instr_mem (
@@ -115,13 +118,13 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       D.rd,
       A.Curr_Instr[19:15],
       A.Curr_Instr[24:20],
-      WrmuxSrc,
+      WB_Data,
       Reg1,
       Reg2
   );
 
   assign reg_num = D.rd;
-  assign reg_data = WrmuxSrc;
+  assign reg_data = WB_Data;
   assign reg_write_sig = D.RegWrite;
 
   // //sign extend
@@ -135,12 +138,15 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
     if ((reset) || (Reg_Stall) || (PcSel))   // initialization or flush or generate a NOP if hazard
         begin
       B.ALUSrc <= 0;
+      B.Jump <= 0;
       B.MemtoReg <= 0;
       B.RegWrite <= 0;
       B.MemRead <= 0;
       B.MemWrite <= 0;
+      B.JumpRegWriteControl  <= 0;
       B.ALUOp <= 0;
       B.Branch <= 0;
+      B.JumpReg <= 0;
       B.Curr_Pc <= 0;
       B.RD_One <= 0;
       B.RD_Two <= 0;
@@ -153,12 +159,15 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       B.Curr_Instr <= A.Curr_Instr;  //debug tmp
     end else begin
       B.ALUSrc <= ALUsrc;
+      B.Jump <= Jump;
       B.MemtoReg <= MemtoReg;
       B.RegWrite <= RegWrite;
       B.MemRead <= MemRead;
       B.MemWrite <= MemWrite;
+      B.JumpRegWriteControl  <= JumpRegWriteControl;
       B.ALUOp <= ALUOp;
       B.Branch <= Branch;
+      B.JumpReg <= JumpReg;
       B.Curr_Pc <= A.Curr_Pc;
       B.RD_One <= Reg1;
       B.RD_Two <= Reg2;
@@ -221,11 +230,13 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       B.Curr_Pc,
       B.ImmG,
       B.Branch,
+      B.Jump,
       ALUResult,
       BrImm,
       Old_PC_Four,
       BrPC,
       PcSel
+      
   );
 
   // EX_MEM_Reg C;
@@ -233,9 +244,11 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
     if (reset)   // initialization
         begin
       C.RegWrite <= 0;
+      C.Jump <= 0;
       C.MemtoReg <= 0;
       C.MemRead <= 0;
       C.MemWrite <= 0;
+      C.JumpRegWriteControl  <= 0;
       C.Pc_Imm <= 0;
       C.Pc_Four <= 0;
       C.Imm_Out <= 0;
@@ -246,9 +259,11 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       C.func7 <= 0;
     end else begin
       C.RegWrite <= B.RegWrite;
+      C.Jump <= B.Jump;
       C.MemtoReg <= B.MemtoReg;
       C.MemRead <= B.MemRead;
       C.MemWrite <= B.MemWrite;
+      C.JumpRegWriteControl  <= B.JumpRegWriteControl;
       C.Pc_Imm <= BrImm;
       C.Pc_Four <= Old_PC_Four;
       C.Imm_Out <= B.ImmG;
@@ -260,9 +275,9 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       C.Curr_Instr <= B.Curr_Instr;  // debug tmp
     end
   end
-
+  
   // // // // Data memory 
-  datamemory data_mem (
+   datamemory data_mem (
       clk,
       C.MemRead,
       C.MemWrite,
@@ -283,7 +298,9 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
     if (reset)   // initialization
         begin
       D.RegWrite <= 0;
+      D.Jump <= 0;
       D.MemtoReg <= 0;
+      D.JumpRegWriteControl  <= 0;
       D.Pc_Imm <= 0;
       D.Pc_Four <= 0;
       D.Imm_Out <= 0;
@@ -292,7 +309,9 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       D.rd <= 0;
     end else begin
       D.RegWrite <= C.RegWrite;
+      D.Jump <= Jump;
       D.MemtoReg <= C.MemtoReg;
+      D.JumpRegWriteControl  <= C.JumpRegWriteControl;
       D.Pc_Imm <= C.Pc_Imm;
       D.Pc_Four <= C.Pc_Four;
       D.Imm_Out <= C.Imm_Out;
@@ -303,6 +322,8 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
     end
   end
 
+  //logic [DATA_W-1:0] Jmux_WrmuxSrc;
+
   //--// The LAST Block
   mux2 #(32) resmux (
       D.Alu_Result,
@@ -310,7 +331,15 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       D.MemtoReg,
       WrmuxSrc
   );
+  mux4 #(32) wrsmux (
+      WrmuxSrc,
+      D.Pc_Four,
+      D.Pc_Imm,
+      D.Imm_Out,
+      D.JumpRegWriteControl,
+      Data_Jal
+  );
 
-  assign WB_Data = WrmuxSrc;
+  assign WB_Data = Data_Jal;
 
 endmodule
