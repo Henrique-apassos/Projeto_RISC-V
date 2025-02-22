@@ -19,7 +19,8 @@ module RISC_V #(
 );
 
   logic [6:0] opcode;
-  logic ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch;
+  logic ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump;	
+  logic [1:0] JumpRegWriteControl;
   logic [1:0] ALUop;
   logic [1:0] ALUop_Reg;
   logic [6:0] Funct7;
@@ -34,7 +35,10 @@ module RISC_V #(
       MemRead,
       MemWrite,
       ALUop,
-      Branch
+      Branch,
+        Jump,
+        JumpReg,
+        JumpRegWriteControl
   );
 
   ALUController ac (
@@ -53,6 +57,8 @@ module RISC_V #(
       MemWrite,
       MemRead,
       Branch,
+      Jump,
+      JumpRegWriteControl,
       ALUop,
       Operation,
       opcode,
