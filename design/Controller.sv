@@ -21,8 +21,11 @@ module Controller (
     output logic MemWrite, //Data memory contents designated by the address input are replaced by the value on the Write data input.
     output logic [1:0] ALUOp,  //00: LW/SW; 01:Branch; 10: Rtype
     output logic Branch,  //0: branch is not taken; 1: branch is taken
+    
     output logic Jump,
-    output logic[1:0] JumpType
+    output logic JumpReg,
+    output logic [1:0] JumpType, // 00: Sem salto, 01: JAL, 10: JALR
+    output logic[1:0] JumpRegWriteControl  //Indica escrita no registrador de retorno (x1) 
     );
 
   logic [6:0] R_TYPE, L_TYPE, S_TYPE, B_TYPE, I_TYPE, JAL, JALR; //define variáveis que armazenam os opcodes de diferentes tipos de instruções
@@ -60,9 +63,14 @@ module Controller (
   //Branch define se ocorrerá desvio
   assign Branch = (Opcode == B_TYPE || Opcode == JALR); //1 - Desvios condicionais e 0 - instruções normais
 
-  //Jump e JumpType indicam se a instrução é um salto 
-  assign Jump = (Opcode == JAL || Opcode == JALR); //1 - se a instrução for um salto: 01 - JAL e 10 - JALR
-  assign JumpType[0] = (Opcode == JAL); 
-  assign JumpType[1] = (Opcode == JALR);
+    // Define o tipo de salto: 
+    // 00 - Sem salto, 01 - JAL, 10 - JALR
+    assign JumpType = (Opcode == JAL)  ? 2'b01 :
+                      (Opcode == JALR) ? 2'b10 :
+                      2'b00;
+
+    // Define se há escrita no registrador de retorno (x1)
+    assign JumpRegWriteControl  = JumpRegWriteControl;
+
 
 endmodule
