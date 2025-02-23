@@ -30,10 +30,10 @@ Seu objetivo é implementar as instruções restantes listadas abaixo:
 | 8  | `LBU`     |      ✅     |    ✅    |      ✅      |
 | 9  | `SB`      |      ✅     |    ✅    |      ✅      |
 | 10 | `SH`      |      ✅     |    ✅    |      ✅      |
-| 11 | `SLTI`    |      ✅     |    ❌    |      ❌      |
+| 11 | `SLTI`    |      ✅     |    ✅    |      ✅      |
 | 12 | `ADDI`    |      ✅     |    ✅    |      ✅      |
-| 13 | `SLLI`    |      ✅     |    ❌    |      ❌      |
-| 14 | `SRLI`    |      ✅     |    ❌    |      ❌      |
+| 13 | `SLLI`    |      ✅     |    ✅    |      ✅      |
+| 14 | `SRLI`    |      ✅     |    ✅    |      ✅      |
 | 15 | `SRAI`    |      ✅     |    ❌    |      ❌      |
 | 16 | `SUB`     |      ✅     |    ❌    |      ❌      |
 | 17 | `SLT`     |      ✅     |    ❌    |      ❌      |
