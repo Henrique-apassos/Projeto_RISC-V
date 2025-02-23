@@ -2,45 +2,40 @@
 
 import Pipe_Buf_Reg_PKG::*;
 
-//a saída do Datapath contém os dados para a execução da próxima instrução, decididos com base na instrução em execução (instrução atual no pipeline)
-module Datapath #( //representa o caminho de dados de um processador com pipeline 
-    parameter PC_W = 9, // Tamanho do PC (Contador de Programa - armazena endereço da instrução)
-    parameter INS_W = 32, // Tamanho da instrução (32 bits)
-    parameter RF_ADDRESS = 5, // Endereço do registrador -> 5 bits = 2^5 = 32 -> x0 ao x31
-    parameter DATA_W = 32, //Tamanho do dado (32 bits)
-    parameter DM_ADDRESS = 9, //Endereço da memória de dados = há 2^9 endereços/posições de memória disponíveis (cada posição armazena uma palavra, que pode ter 1,2,3,4...bytes)
-    parameter ALU_CC_W = 4  //Código de controle da ALU
+module Datapath #(
+    parameter PC_W = 9,  // Program Counter
+    parameter INS_W = 32,  // Instruction Width
+    parameter RF_ADDRESS = 5,  // Register File Address
+    parameter DATA_W = 32,  // Data WriteData
+    parameter DM_ADDRESS = 9,  // Data Memory Address
+    parameter ALU_CC_W = 4  // ALU Control Code Width
 ) (
-    input  logic clk, // Relógio
-    reset, // Reinicia estado do processador
-    RegWrite, // Habilita escrita nos registradores
-    MemtoReg,  // Controla se dado vem da ALU ou da memória para o registrador de destino
-    ALUsrc, // Define se o segundo operando da ALU vem da memória de dados ou da ALU
-    MemWrite,  // Habilita escrita na memória
-    MemRead,  // Habilita leitura da memória de dados
-    Branch,  // Informa se é uma instrução de branch ou uma instrução normal 
-    Jump, // Informa quando deve ocorrer um jump
-    input logic JumpReg,
-    input  logic [1:0] JumpRegWriteControl,  // Determina se a instrução de jump envolve escrita no registrador
-    input  logic [1:0] ALUOp, // Define qual é a operação que a ALU deve executar 
-    input  logic [ALU_CC_W -1:0] ALU_CC, // Dados sobre flags que guiam o comportamento no pipeline
+    input  logic clk,
+    reset,
+    RegWrite,
+    MemtoReg,  // Register file writing enable   // Memory or ALU MUX
+    ALUsrc,
+    MemWrite,  // Register file or Immediate MUX // Memroy Writing Enable
+    MemRead,  // Memroy Reading Enable
+    Branch,  // Branch Enable
+    input  logic [          1:0] ALUOp,
+    input  logic [ALU_CC_W -1:0] ALU_CC,         // ALU Control Code ( input of the ALU )
+    output logic [          6:0] opcode,
+    output logic [          6:0] Funct7,
+    output logic [          2:0] Funct3,
+    output logic [          1:0] ALUOp_Current,
+    output logic [   DATA_W-1:0] WB_Data,        //Result After the last MUX
 
-    output logic [6:0] opcode, // Indica qual é a operação da instrução que será realizada 
-    output logic [6:0] Funct7, // Ajuda a determinar qual é a operação da instrução que será realizada
-    output logic [2:0] Funct3, // Ajuda a determinar qual é a operação da instrução que será realizada 
-    output logic [1:0] ALUOp_Current, // Transmite qual é a operação desejada para a ALU, com base em ALUOp
-    output logic [DATA_W-1:0] WB_Data, // O dado que será escrito de volta nos registradores após a execução da instrução
+    // Para depuração no tesbench:
+    output logic [4:0] reg_num,  //número do registrador que foi escrito
+    output logic [DATA_W-1:0] reg_data,  //valor que foi escrito no registrador
+    output logic reg_write_sig,  //sinal de escrita no registrador
 
-    // Para depuração no tesbench: testa se as instruções estão sendo executadas corretamente no pipeline 
-    output logic [4:0] reg_num,  // Indica qual registrador foi escrito na última operação de escrita
-    output logic [DATA_W-1:0] reg_data,  // Indica o valor que foi escrito no registrador
-    output logic reg_write_sig,  // Flag que indica houve escrita no registrador no ciclo atual
-
-    output logic wr,  // Indica se haverá escrita na memória no ciclo atual (não pode ser 1 qdo reade é 1)
-    output logic reade,  // Indica se haverá leitura da memória no ciclo atual (não pode haver leitura e escrita no mesmo ciclo)
-    output logic [DM_ADDRESS-1:0] addr,  // Endereço de memória que será acessado para escrita e para leitura
-    output logic [DATA_W-1:0] wr_data,  // Indica que será escrito algo em addr
-    output logic [DATA_W-1:0] rd_data  // Indica que será lido algo de addr
+    output logic wr,  // write enable
+    output logic reade,  // read enable
+    output logic [DM_ADDRESS-1:0] addr,  // address
+    output logic [DATA_W-1:0] wr_data,  // write data
+    output logic [DATA_W-1:0] rd_data  // read data
 );
 
   logic [PC_W-1:0] PC, PCPlus4, Next_PC;
@@ -49,70 +44,64 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
   logic [DATA_W-1:0] ReadData;
   logic [DATA_W-1:0] SrcB, ALUResult;
   logic [DATA_W-1:0] ExtImm, BrImm, Old_PC_Four, BrPC;
-  logic [DATA_W-1:0] WrmuxSrc,Data_Jal;
-  logic PcSel,rdfinal,um;  // mux select / flush signal
+  logic [DATA_W-1:0] WrmuxSrc;
+  logic PcSel;  // mux select / flush signal
   logic [1:0] FAmuxSel;
   logic [1:0] FBmuxSel;
   logic [DATA_W-1:0] FAmux_Result;
   logic [DATA_W-1:0] FBmux_Result;
   logic Reg_Stall;  //1: PC fetch same, Register not update
-  logic haltOcorre; 
+  logic haltOcorre;
 
   if_id_reg A;
   id_ex_reg B;
   ex_mem_reg C;
   mem_wb_reg D;
 
-
-  //PC contém endereço da instrução atual
   // next PC
-  adder #(9) pcadd (  // Somador: incrementa o PC em 4 para a próxima instrução 
+  adder #(9) pcadd (
       PC,
       9'b100,
       PCPlus4
   );
-  mux2 #(9) pcmux ( // Multiplexador: seleciona entre PC+4 ou um endereço de desvio
+  mux2 #(9) pcmux (
       PCPlus4,
-      BrPC,
+      BrPC[PC_W-1:0],
       PcSel,
       Next_PC
   );
-  flopr #(9) pcreg ( // Registrador do PC: armazena o valor do PC e atualiza a cada ciclo de clock 
+  flopr #(9) pcreg (
       clk,
       reset,
       Next_PC,
       Reg_Stall,
-      Pcsel,
       PC
   );
-  instructionmemory instr_mem ( // Memória de instruções: armazena instrução que será decodificada e executada 
+  instructionmemory instr_mem (
       clk,
       PC,
       Instr
   );
-
-  always @(posedge clk) begin 
-    if(reset) begin
-      haltOcorre <= 0;
-    end
-  end
+  
 
   // IF_ID_Reg A;
-  always @(posedge clk) begin // A cada subida do clock os valores de PC e da instrução são atualizados
-    if ((reset) || (PcSel) || (haltOcorre))   // Se resetado ou se ocorreu um desvio
-    begin
-      A.Curr_Pc <= 0; // Zera o PC armazenado
-      A.Curr_Instr <= 0; // Zera a instrução armazenada
+  always @(posedge clk) begin
+    if(reset) haltOcorre <= 0;
+	 
+	 if ((reset) || (PcSel) || (haltOcorre))   // initialization or flush
+        begin
+      A.Curr_Pc <= 0;
+      A.Curr_Instr <= 0;
     end
-    else if (!Reg_Stall && !haltOcorre) // Se não houver stall (bolha)
-    begin
-      A.Curr_Pc <= PC; // Armazena PC atual
-      A.Curr_Instr <= Instr; // Armazena instrução buscada
+        else if (!Reg_Stall && !haltOcorre)    // stall
+        begin
+      A.Curr_Pc <= PC;
+      A.Curr_Instr <= Instr;
     end
   end
 
   //--// The Hazard Detection Unit
-  HazardDetection detect ( // Se houver dependência, pipeline será pausado: Reg_Stall = 1
+  HazardDetection detect (
       A.Curr_Instr[19:15],
       A.Curr_Instr[24:20],
       B.rd,
@@ -123,42 +112,39 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
   // //Register File
   assign opcode = A.Curr_Instr[6:0];
 
-  RegFile rf ( // Lê os valores dos registradores mencionados na instrução para as fases seguintes 
+  RegFile rf (
       clk,
       reset,
       D.RegWrite,
       D.rd,
       A.Curr_Instr[19:15],
       A.Curr_Instr[24:20],
-      WB_Data,
+      WrmuxSrc,
       Reg1,
       Reg2
   );
 
   assign reg_num = D.rd;
-  assign reg_data = WB_Data;
+  assign reg_data = WrmuxSrc;
   assign reg_write_sig = D.RegWrite;
 
   // //sign extend
-  imm_Gen Ext_Imm ( // Extensor de imediato
+  imm_Gen Ext_Imm (
       A.Curr_Instr,
       ExtImm
   );
 
   // ID_EX_Reg B;
   always @(posedge clk) begin
-    if ((reset) || (Reg_Stall) || (PcSel) || (haltOcorre))   
-      begin
+    if ((reset) || (Reg_Stall) || (PcSel) || (haltOcorre))   // initialization or flush or generate a NOP if hazard
+        begin
       B.ALUSrc <= 0;
-      B.Jump <= 0;
       B.MemtoReg <= 0;
       B.RegWrite <= 0;
       B.MemRead <= 0;
       B.MemWrite <= 0;
-      B.JumpRegWriteControl  <= 0;
       B.ALUOp <= 0;
       B.Branch <= 0;
-      B.JumpReg <= 0;
       B.Curr_Pc <= 0;
       B.RD_One <= 0;
       B.RD_Two <= 0;
@@ -171,15 +157,12 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       B.Curr_Instr <= A.Curr_Instr;  //debug tmp
     end else begin
       B.ALUSrc <= ALUsrc;
-      B.Jump <= Jump;
       B.MemtoReg <= MemtoReg;
       B.RegWrite <= RegWrite;
       B.MemRead <= MemRead;
       B.MemWrite <= MemWrite;
-      B.JumpRegWriteControl  <= JumpRegWriteControl;
       B.ALUOp <= ALUOp;
       B.Branch <= Branch;
-      B.JumpReg <= JumpReg;
       B.Curr_Pc <= A.Curr_Pc;
       B.RD_One <= Reg1;
       B.RD_Two <= Reg2;
@@ -242,29 +225,22 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       B.Curr_Pc,
       B.ImmG,
       B.Branch,
-      B.Jump,
       ALUResult,
       BrImm,
       Old_PC_Four,
       BrPC,
       PcSel
-      
   );
 
   // EX_MEM_Reg C;
   always @(posedge clk) begin
-    if(ALUResult == 0 && Funct3 == 011) //Funct3 == 011 indica o ALUResult é 0 por conta da instrução halt, e não por conta de uma instrução aritmética
-      haltOcorre = 1;
-    
-
-    if (reset || haltOcorre)   // initialization
+    if(ALUResult == 0 && Funct3 == 011) haltOcorre <= 1;
+	 if (reset || haltOcorre)   // initialization
         begin
       C.RegWrite <= 0;
-      C.Jump <= 0;
       C.MemtoReg <= 0;
       C.MemRead <= 0;
       C.MemWrite <= 0;
-      C.JumpRegWriteControl  <= 0;
       C.Pc_Imm <= 0;
       C.Pc_Four <= 0;
       C.Imm_Out <= 0;
@@ -275,11 +251,9 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       C.func7 <= 0;
     end else begin
       C.RegWrite <= B.RegWrite;
-      C.Jump <= B.Jump;
       C.MemtoReg <= B.MemtoReg;
       C.MemRead <= B.MemRead;
       C.MemWrite <= B.MemWrite;
-      C.JumpRegWriteControl  <= B.JumpRegWriteControl;
       C.Pc_Imm <= BrImm;
       C.Pc_Four <= Old_PC_Four;
       C.Imm_Out <= B.ImmG;
@@ -291,9 +265,9 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       C.Curr_Instr <= B.Curr_Instr;  // debug tmp
     end
   end
-  
+
   // // // // Data memory 
-   datamemory data_mem (
+  datamemory data_mem (
       clk,
       C.MemRead,
       C.MemWrite,
@@ -314,9 +288,7 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
     if (reset || haltOcorre)   // initialization
         begin
       D.RegWrite <= 0;
-      D.Jump <= 0;
       D.MemtoReg <= 0;
-      D.JumpRegWriteControl  <= 0;
       D.Pc_Imm <= 0;
       D.Pc_Four <= 0;
       D.Imm_Out <= 0;
@@ -325,9 +297,7 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       D.rd <= 0;
     end else begin
       D.RegWrite <= C.RegWrite;
-      D.Jump <= Jump;
       D.MemtoReg <= C.MemtoReg;
-      D.JumpRegWriteControl  <= C.JumpRegWriteControl;
       D.Pc_Imm <= C.Pc_Imm;
       D.Pc_Four <= C.Pc_Four;
       D.Imm_Out <= C.Imm_Out;
@@ -338,8 +308,6 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
     end
   end
 
-  //logic [DATA_W-1:0] Jmux_WrmuxSrc;
-
   //--// The LAST Block
   mux2 #(32) resmux (
       D.Alu_Result,
@@ -347,15 +315,7 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       D.MemtoReg,
       WrmuxSrc
   );
-  mux4 #(32) wrsmux (
-      WrmuxSrc,
-      D.Pc_Four,
-      D.Pc_Imm,
-      D.Imm_Out,
-      D.JumpRegWriteControl,
-      Data_Jal
-  );
 
-  assign WB_Data = Data_Jal;
+  assign WB_Data = WrmuxSrc;
 
 endmodule
