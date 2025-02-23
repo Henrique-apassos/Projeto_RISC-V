@@ -20,6 +20,7 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
     MemRead,  // Habilita leitura da memória de dados
     Branch,  // Informa se é uma instrução de branch ou uma instrução normal 
     Jump, // Informa quando deve ocorrer um jump
+    JumpReg,
     input  logic [1:0] JumpRegWriteControl,  // Determina se a instrução de jump envolve escrita no registrador
     input  logic [1:0] ALUOp, // Define qual é a operação que a ALU deve executar 
     input  logic [ALU_CC_W -1:0] ALU_CC, // Dados sobre flags que guiam o comportamento no pipeline

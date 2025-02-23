@@ -34,7 +34,6 @@ package Pipe_Buf_Reg_PKG;
     logic        RegWrite;
     logic        Jump;
     logic        MemtoReg;
-    logic        RegWrite;
     logic        MemRead;
     logic        MemWrite;
     logic [1:0]  JumpRegWriteControl;
