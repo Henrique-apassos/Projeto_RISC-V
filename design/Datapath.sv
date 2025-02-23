@@ -256,7 +256,7 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
       haltOcorre = 1;
     
 
-    if (reset || HaltOcorre)   // initialization
+    if (reset || haltOcorre)   // initialization
         begin
       C.RegWrite <= 0;
       C.Jump <= 0;
