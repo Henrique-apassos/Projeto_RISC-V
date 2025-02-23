@@ -252,9 +252,9 @@ module Datapath #( //representa o caminho de dados de um processador com pipelin
 
   // EX_MEM_Reg C;
   always @(posedge clk) begin
-    if(ALUResult == 0 && Funct3 == 011) //Funct3 == 011 indica o ALUResult é 0 por conta da instrução halt, e não por conta de uma instrução aritmética
+    if(ALUResult == 0 && Funct3 == 011) { //Funct3 == 011 indica o ALUResult é 0 por conta da instrução halt, e não por conta de uma instrução aritmética
       haltOcorre = 1;
-    
+    }
 
     if (reset || HaltOcorre)   // initialization
         begin
