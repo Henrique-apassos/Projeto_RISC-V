@@ -21,29 +21,29 @@ module alu#( //cabeçalho do módulo ALU - define dois parâmetros
             case(Operation) //define diferentes operações para a ALU, dependendo do código da operação no input
                 4'b0000:	//AND, ANDI
                         ALUResult = SrcA & SrcB;
-	        4'b0001:	//OR, ORI
+	            4'b0001:	//OR, ORI
                         ALUResult = SrcA | SrcB;
                 4'b0010:	//ADD
                         ALUResult = SrcA + SrcB;
-		4'b0011:	//SUB
+		        4'b0011:	//SUB
                         ALUResult = SrcA - SrcB;
-		4'b0100:	//SRLI
+		        4'b0100:	//SRLI
                         ALUResult = SrcA >> SrcB;
-		4'b0101:	//SLLI
+		        4'b0101:	//SLLI
                         ALUResult = SrcA << SrcB;
-		4'b0110:	//XOR
+		        4'b0110:	//XOR
                         ALUResult = SrcA ^ SrcB;
-		4'b0111:	//SRAI
+		        4'b0111:	//SRAI
                         ALUResult = $signed(SrcA) >>> $signed(SrcB);
                 4'b1000:	// BEQ
                         ALUResult = (SrcA == SrcB) ? 1 : 0; //se forem iguais, retorna 1
                 4'b1001:	// BNE
                         ALUResult = (SrcA != SrcB) ? 1 : 0; //se não forem iguais, retorna 1
-		4'b1010:	// JALR
+		        4'b1010:	// JALR
                         ALUResult = $signed(SrcA) + $signed(SrcB);
                 4'b1011:	// BGE
                         ALUResult = ($signed(SrcA) >= $signed(SrcB)) ? 1 : 0; //se SrcA for maior ou igual a SrcB, retorna 1
-		4'b1100:	// SLT, SLTI, BLT
+		        4'b1100:	// SLT, SLTI, BLT
                         ALUResult =  ($signed(SrcA) < $signed(SrcB)) ? 1 : 0; //se SrcA for menor do que SrcB, retorna 1
                 4'b1101:        // BLTU, SLTU, SLTIU
                         ALUResult = ($unsigned(SrcA) < $unsigned(SrcB)) ? 1 : 0;

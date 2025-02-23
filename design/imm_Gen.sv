@@ -13,7 +13,7 @@ module imm_Gen (
 		
 		  7'b0010011: /*I-type arithmetic part*/
         case(inst_code[14:12])
-          3'b101: //SRAI, SLLI
+          3'b101: //SRAI, SRLI
 		        Imm_out = {27'b0, inst_code[24:20]}; //O shamt está nas posicoes [24:20] do inst_code
           3'b001: //SLLI
             Imm_out = {27'b0, inst_code[24:20]}; //O shamt está nas posicoes [24:20] do inst_code
