@@ -55,7 +55,6 @@ module ALUController (
                         ((ALUOp == 2'b01) && (Funct3 == 3'b001)) || // BNE
                         ((ALUOp == 2'b01) && (Funct3 == 3'b100)) || // BLT
                         ((ALUOp == 2'b01) && (Funct3 == 3'b101)) || // BGE
-                        ((ALUOp == 2'b11) && (Funct3 == 3'b000)) || // JALR
                         ((ALUOp == 2'b01) && (Funct3 == 3'b110)) || // BLTU
                         ((ALUOp == 2'b01) && (Funct3 == 3'b111)) || // BGEU
                         ((ALUOp == 2'b10) && (Funct3 == 3'b011)) || // HALT                                    
