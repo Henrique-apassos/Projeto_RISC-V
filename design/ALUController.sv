@@ -47,7 +47,7 @@ module ALUController (
                          ((ALUOp == 2'b10) && (Funct3 == 3'b100) && (Funct7 == 7'b0000000)) || // XOR
                          ((ALUOp == 2'b01) && (Funct3 == 3'b110)) || // BLTU
                          ((ALUOp == 2'b01) && (Funct3 == 3'b111)) || // BGEU
-                         ((ALUOp == 2'b10) && (Funct3 == 3'b101)) || // R\I- SRL & SRLI >>
+                         ((ALUOp == 2'b10) && (Funct3 == 3'b101) && (Funct7 == 7'b0000000)) || // R\I- SRL & SRLI >>
                          ((ALUOp == 2'b10) && (Funct3 == 3'b010)) || // R\I- SLTI <
                          ((ALUOp == 2'b10) && (Funct3 == 3'b011)); // HALT
 		
