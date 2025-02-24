@@ -34,8 +34,8 @@ module alu#( //cabeçalho do módulo ALU - define dois parâmetros
 		        4'b0110:	//XOR
                         ALUResult = SrcA ^ SrcB;
 		        4'b0111:	//SRAI
-                        ALUResult = $signed(SrcA) >>> $signed(SrcB)
-                4'b1000:	// BEQ
+                        ALUResult = $signed(SrcA) >>> $signed(SrcB);
+              4'b1000:	// BEQ
                         ALUResult = (SrcA == SrcB) ? 1 : 0; //se forem iguais, retorna 1
               4'b1001:	// BNE
                         ALUResult = (SrcA != SrcB) ? 1 : 0; //se não forem iguais, retorna 1
