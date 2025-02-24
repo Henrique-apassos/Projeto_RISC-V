@@ -13,6 +13,7 @@ module Datapath #(
     input  logic clk,
     reset,
     RegWrite,
+    haltOcorre,
     MemtoReg,  // Register file writing enable   // Memory or ALU MUX
     ALUsrc,
     MemWrite,  // Register file or Immediate MUX // Memroy Writing Enable
@@ -52,7 +53,7 @@ module Datapath #(
   logic [DATA_W-1:0] FAmux_Result;
   logic [DATA_W-1:0] FBmux_Result;
   logic Reg_Stall;  //1: PC fetch same, Register not update
-  logic haltOcorre;
+  logic haltPut;
 
   if_id_reg A;
   id_ex_reg B;
@@ -87,14 +88,12 @@ module Datapath #(
 
   // IF_ID_Reg A;
   always @(posedge clk) begin
-    if(reset) haltOcorre <= 0;
-	 
-	 if ((reset) || (PcSel) || (haltOcorre))   // initialization or flush
+	 if ((reset) || (PcSel))   // initialization or flush
         begin
       A.Curr_Pc <= 0;
       A.Curr_Instr <= 0;
     end
-        else if (!Reg_Stall && !haltOcorre)    // stall
+        else if (!Reg_Stall)    // stall
         begin
       A.Curr_Pc <= PC;
       A.Curr_Instr <= Instr;
@@ -137,9 +136,10 @@ module Datapath #(
 
   // ID_EX_Reg B;
   always @(posedge clk) begin
-    if ((reset) || (Reg_Stall) || (PcSel) || (haltOcorre))   // initialization or flush or generate a NOP if hazard
+    if ((reset) || (Reg_Stall) || (PcSel))   // initialization or flush or generate a NOP if hazard
         begin
       B.ALUSrc <= 0;
+      haltPut <= haltOcorre;
       B.MemtoReg <= 0;
       B.RegWrite <= 0;
       B.MemRead <= 0;
@@ -159,6 +159,7 @@ module Datapath #(
       B.Curr_Instr <= A.Curr_Instr;  //debug tmp
     end else begin
       B.ALUSrc <= ALUsrc;
+      haltPut <= haltOcorre;
       B.MemtoReg <= MemtoReg;
       B.RegWrite <= RegWrite;
       B.MemRead <= MemRead;
@@ -238,10 +239,10 @@ module Datapath #(
   
   // EX_MEM_Reg C;
   always @(posedge clk) begin
-    if(ALUResult == 0 && Funct3 == 011) haltOcorre <= 1;
-	 if (reset || haltOcorre)   // initialization
+	 if (reset)   // initialization
         begin
       C.RegWrite <= 0;
+      haltPut <= haltOcorre;
       C.MemtoReg <= 0;
       C.MemRead <= 0;
       C.MemWrite <= 0;
@@ -256,6 +257,7 @@ module Datapath #(
 		C.Jump <= 0;
     end else begin
       C.RegWrite <= B.RegWrite;
+      haltPut <= haltOcorre;
       C.MemtoReg <= B.MemtoReg;
       C.MemRead <= B.MemRead;
       C.MemWrite <= B.MemWrite;
@@ -291,9 +293,10 @@ module Datapath #(
 
   // MEM_WB_Reg D;
   always @(posedge clk) begin
-    if (reset || haltOcorre)   // initialization
+    if (reset || haltPut)   // initialization
         begin
       D.RegWrite <= 0;
+      haltPut <= haltOcorre;
       D.MemtoReg <= 0;
       D.Pc_Imm <= 0;
       D.Pc_Four <= 0;
@@ -304,6 +307,7 @@ module Datapath #(
 		D.Jump <= 0;
     end else begin
       D.RegWrite <= C.RegWrite;
+      haltPut <= haltOcorre;
       D.MemtoReg <= C.MemtoReg;
       D.Pc_Imm <= C.Pc_Imm;
       D.Pc_Four <= C.Pc_Four;

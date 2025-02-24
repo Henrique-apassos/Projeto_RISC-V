@@ -33,6 +33,7 @@ module Controller (
   assign S_TYPE = 7'b0100011;  //sw,sb,sh
   assign JAL = 7'b1101111;  //jal
   assign JALR = 7'b1100111;  //jalr
+   assign HALT = 7'b1001100;
 
   //Com base nos opcodes das instruções, serão definidas "flags" para orientar o comportamento da CPU:
 
@@ -53,12 +54,14 @@ module Controller (
 
   //ALUOp define a classe de instrução que será executada na ALU, portando ALUOp define o comportamento da ALU
   assign ALUOp[0] = (Opcode == B_TYPE || Opcode == JALR);
-  assign ALUOp[1] = (Opcode == R_TYPE || Opcode == I_TYPE || Opcode == JALR);
+  assign ALUOp[1] = (Opcode == R_TYPE || Opcode == I_TYPE || Opcode == JALR || Opcode == HALT);
 
 
   //Branch define se ocorrerá desvio
   assign Branch = (Opcode == B_TYPE || Opcode == JALR || Opcode == JAL); //1 - Desvios condicionais e 0 - instruções normais
   
   assign Jump = (Opcode == JALR || Opcode == JAL); // 1 - Desvio de funcao
+
+   assign HALT = 7'b1001100;
 
 endmodule

@@ -1,0 +1,157 @@
+C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/RegFile.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/RegFile.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module RegFile
+
+Top level modules:
+	RegFile
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/ALUController.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/ALUController.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module ALUController
+
+Top level modules:
+	ALUController
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/BranchUnit.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/BranchUnit.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module BranchUnit
+
+Top level modules:
+	BranchUnit
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/Memoria32.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/Memoria32.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Memoria32
+
+Top level modules:
+	Memoria32
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/Datapath.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/Datapath.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling package Datapath_sv_unit
+-- Importing package Pipe_Buf_Reg_PKG
+-- Compiling module Datapath
+
+Top level modules:
+	Datapath
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/ramOnChipData.v {1 {vlog -work work -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/ramOnChipData.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module ramOnChipData
+
+Top level modules:
+	ramOnChipData
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/adder.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/adder.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module adder
+
+Top level modules:
+	adder
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/HazardDetection.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/HazardDetection.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module HazardDetection
+
+Top level modules:
+	HazardDetection
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/ramOnChip32.v {1 {vlog -work work -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/ramOnChip32.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module ramOnChip32
+
+Top level modules:
+	ramOnChip32
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/flopr.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/flopr.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module flopr
+
+Top level modules:
+	flopr
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/ForwardingUnit.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/ForwardingUnit.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module ForwardingUnit
+
+Top level modules:
+	ForwardingUnit
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/mux2.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/mux2.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module mux2
+
+Top level modules:
+	mux2
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/Controller.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/Controller.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Controller
+
+Top level modules:
+	Controller
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/RISC_V.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/RISC_V.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module RISC_V
+
+Top level modules:
+	RISC_V
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/mux4.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/mux4.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module mux4
+
+Top level modules:
+	mux4
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/Memoria32Data.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/Memoria32Data.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Memoria32Data
+
+Top level modules:
+	Memoria32Data
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/verif/tb_top.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/verif/tb_top.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module tb_top
+
+Top level modules:
+	tb_top
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/alu.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/alu.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module alu
+
+Top level modules:
+	alu
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/datamemory.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/datamemory.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module datamemory
+
+Top level modules:
+	datamemory
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/instructionmemory.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/instructionmemory.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module instructionmemory
+
+Top level modules:
+	instructionmemory
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/imm_Gen.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/imm_Gen.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module imm_Gen
+
+Top level modules:
+	imm_Gen
+
+} {} {}} C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/RegPack.sv {1 {vlog -work work -sv -stats=none C:/Users/victo/Downloads/Projeto_IH/Projeto_RISC-V/design/RegPack.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling package Pipe_Buf_Reg_PKG
+
+Top level modules:
+	--none--
+
+} {} {}}
