@@ -19,11 +19,11 @@ module alu#( //cabeçalho do módulo ALU - define dois parâmetros
         always_comb //bloco para lógica combinacional (Sem clock. Apenas com base nos sinais de entrada)
         begin
             case(Operation) //define diferentes operações para a ALU, dependendo do código da operação no input
-                4'b0000:	//AND, ANDI
+              4'b0000:	//AND, ANDI
                         ALUResult = SrcA & SrcB;
-	            4'b0001:	//OR, ORI
+	           4'b0001:	//OR, ORI
                         ALUResult = SrcA | SrcB;
-                4'b0010:	//ADD
+              4'b0010:	//ADD
                         ALUResult = SrcA + SrcB;
 		        4'b0011:	//SUB
                         ALUResult = SrcA - SrcB;
@@ -37,19 +37,17 @@ module alu#( //cabeçalho do módulo ALU - define dois parâmetros
                         ALUResult = $signed(SrcA) >>> $signed(SrcB)
                 4'b1000:	// BEQ
                         ALUResult = (SrcA == SrcB) ? 1 : 0; //se forem iguais, retorna 1
-                4'b1001:	// BNE
+              4'b1001:	// BNE
                         ALUResult = (SrcA != SrcB) ? 1 : 0; //se não forem iguais, retorna 1
-		        4'b1010:	// JALR
-                        ALUResult = $signed(SrcA) + $signed(SrcB);
-                4'b1011:	// BGE
+              4'b1011:	// BGE
                         ALUResult = ($signed(SrcA) >= $signed(SrcB)) ? 1 : 0; //se SrcA for maior ou igual a SrcB, retorna 1
 		        4'b1100:	// SLT, SLTI, BLT
                         ALUResult =  ($signed(SrcA) < $signed(SrcB)) ? 1 : 0; //se SrcA for menor do que SrcB, retorna 1
-                4'b1101:        // BLTU, SLTU, SLTIU
+              4'b1101:        // BLTU, SLTU, SLTIU
                         ALUResult = ($unsigned(SrcA) < $unsigned(SrcB)) ? 1 : 0;
-                4'b1110:        // BGEU
+              4'b1110:        // BGEU
                         ALUResult = ($unsigned(SrcA) >= $unsigned(SrcB)) ? 1 : 0;
-                4'b1111:        // HALT
+              4'b1111:        // HALT
                         ALUResult = 32'b0; 
             default:
                     ALUResult = 0;
