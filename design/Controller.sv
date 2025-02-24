@@ -21,7 +21,8 @@ module Controller (
     output logic MemWrite, //Data memory contents designated by the address input are replaced by the value on the Write data input.
     output logic [1:0] ALUOp,  //00: LW/SW; 01:Branch; 10: Rtype
     output logic Branch,  //0: branch is not taken; 1: branch is taken
-	 output logic Jump // 0: Not jump; 1: Jump
+	 output logic Jump, // 0: Not jump; 1: Jump
+	 output logic Halt
     );
 
   logic [6:0] R_TYPE, L_TYPE, S_TYPE, B_TYPE, I_TYPE, JAL, JALR; //define variáveis que armazenam os opcodes de diferentes tipos de instruções
@@ -62,6 +63,6 @@ module Controller (
   
   assign Jump = (Opcode == JALR || Opcode == JAL); // 1 - Desvio de funcao
 
-   assign HALT = 7'b1001100;
+   assign Halt = (Opcode == Halt);
 
 endmodule

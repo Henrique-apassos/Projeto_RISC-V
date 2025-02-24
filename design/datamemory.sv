@@ -41,20 +41,20 @@ module datamemory #(
 		  if(Dataout[7] == 1)
 				rd <= {{24{1'b1}}, Dataout[7:0]};
 		  else
-				rd <= Dataout[7:0];
+				rd <= {{24{1'b0}}, Dataout[7:0]};
 		  end
 		  3'b001: begin //LH
 		  if(Dataout[7] == 1)
 				rd <={{16{1'b1}}, Dataout[15:0]};
 			else
-				rd <= Dataout[15:0];
+				rd <= {{24{1'b0}}, Dataout[15:0]};
 		  end
 		  3'b010:  //LW
         rd <= Dataout;
 		  3'b100: //LBU
-		  rd <= Dataout[7:0];
+		  rd <= {{24{1'b0}}, Dataout[7:0]};
 		  3'b101: //LHU
-		  rd <= Dataout[15:0];
+		  rd <= {{24{1'b0}}, Dataout[15:0]};
         default: rd <= Dataout;
       endcase
     end

@@ -35,7 +35,8 @@ module RISC_V #(
       MemWrite,
       ALUop,
       Branch,
-		Jump
+		Jump,
+		Halt
   );
 
   ALUController ac (
@@ -55,6 +56,7 @@ module RISC_V #(
       MemRead,
       Branch,
 		Jump,
+		Halt,
       ALUop,
       Operation,
       opcode,
