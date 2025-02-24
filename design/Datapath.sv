@@ -228,6 +228,7 @@ module Datapath #(
       B.Curr_Pc,
       B.ImmG,
       B.Branch,
+		B.Jump,
       ALUResult,
       BrImm,
       Old_PC_Four,
@@ -252,6 +253,7 @@ module Datapath #(
       C.rd <= 0;
       C.func3 <= 0;
       C.func7 <= 0;
+		C.Jump <= 0;
     end else begin
       C.RegWrite <= B.RegWrite;
       C.MemtoReg <= B.MemtoReg;
@@ -260,12 +262,13 @@ module Datapath #(
       C.Pc_Imm <= BrImm;
       C.Pc_Four <= Old_PC_Four;
       C.Imm_Out <= B.ImmG;
-      C.Alu_Result <= (B.Jump)? ALUResult : PCPlus4;
+      C.Alu_Result <= ALUResult;
       C.RD_Two <= FBmux_Result;
       C.rd <= B.rd;
       C.func3 <= B.func3;
       C.func7 <= B.func7;
       C.Curr_Instr <= B.Curr_Instr;  // debug tmp
+		C.Jump <= B.Jump;
     end
   end
 
@@ -298,6 +301,7 @@ module Datapath #(
       D.Alu_Result <= 0;
       D.MemReadData <= 0;
       D.rd <= 0;
+		D.Jump <= 0;
     end else begin
       D.RegWrite <= C.RegWrite;
       D.MemtoReg <= C.MemtoReg;
@@ -308,14 +312,17 @@ module Datapath #(
       D.MemReadData <= ReadData;
       D.rd <= C.rd;
       D.Curr_Instr <= C.Curr_Instr;  //Debug Tmp
+		D.Jump <= C.Jump;
     end
   end
 
   //--// The LAST Block
-  mux2 #(32) resmux (
+  mux4 #(32) resmux (
       D.Alu_Result,
       D.MemReadData,
-      D.MemtoReg,
+		{32'b0},
+		D.Imm_Out,
+		{D.Jump, D.MemtoReg},
       WrmuxSrc
   );
 

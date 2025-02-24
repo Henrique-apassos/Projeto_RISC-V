@@ -25,6 +25,6 @@ module BranchUnit #(
  
   assign Branch_Sel = (Branch && AluResult[0]);  // 0:Branch is taken; 1:Branch is not taken
   assign PcSel = Branch_Sel;  // 1:branch is taken; 0:branch is not taken(choose pc+4)
-  assign BrPC = (Jump)? ((Branch_Sel) ? PC_Imm : 32'b0) : PC_Jump; // Branch -> PC+Imm   // Otherwise, BrPC value is not important
+  assign BrPC = (Jump)? PC_Jump :((Branch_Sel) ? PC_Imm : 32'b0); // Branch -> PC+Imm   // Otherwise, BrPC value is not important
   
 endmodule 
