@@ -23,13 +23,20 @@
 --		long as its copyright notice remains unchanged. 
 ------------------------------------------------------------------------------*/
 
-module Memoria32Data (
+module Memoria32Data #(
+    parameter HELPER_S0_TAM = 7, //aqui
+    parameter HELPER_IN_OUT = 15 //aqui
+)(
     input wire [31:0] raddress,
     input wire [31:0] waddress,
     input wire Clk,
     input wire [31:0] Datain,
     output wire [31:0] Dataout,
-    input wire [3:0] Wr
+    input wire [3:0] Wr,
+    output wire [HELPER_S0_TAM:0] auxOutS0, //aqui
+    output wire [HELPER_IN_OUT:0] aux2Out, //aqui
+    output wire [HELPER_S0_TAM:0] auxInS0, //aqui
+    output wire [HELPER_IN_OUT:0] aux2In //aqui
 );
 
   wire [15:0] readUsefullAddress = raddress[15:0];
@@ -60,11 +67,15 @@ module Memoria32Data (
   assign Dataout[23:16] = outS2;
   assign Dataout[15:8] = outS1;
   assign Dataout[7:0] = outS0;
+  assign auxOutS0 = outS0; //aqui
+  assign aux2Out = Dataout[HELPER_IN_OUT:0]; //aqui
 
   assign inS3 = Datain[31:24];
   assign inS2 = Datain[23:16];
   assign inS1 = Datain[15:8];
   assign inS0 = Datain[7:0];
+  assign auxInS0 = inS0; //aqui
+  assign aux2In = Datain[HELPER_IN_OUT:0]; //aqui
 
   //Bancos de memórias (cada banco possui 65536 bytes)
   //0

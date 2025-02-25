@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module RISC_V #(
+module riscv #(
     parameter DATA_W = 32
 ) (
     input logic clk,
@@ -19,7 +19,7 @@ module RISC_V #(
 );
 
   logic [6:0] opcode;
-  logic ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch;
+  logic ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, J_type, Jal, Jalr, Halt; //aqui
   logic [1:0] ALUop;
   logic [1:0] ALUop_Reg;
   logic [6:0] Funct7;
@@ -35,15 +35,18 @@ module RISC_V #(
       MemWrite,
       ALUop,
       Branch,
-		Jump,
-		Halt
+      J_type, //aqui
+      Jalr, //aqui
+      Jal, //aqui
+      Halt //aqui
   );
 
   ALUController ac (
       ALUop_Reg,
       Funct7,
       Funct3,
-      Operation
+      Operation,
+      Jalr // aqui
   );
 
   Datapath dp (
@@ -55,8 +58,6 @@ module RISC_V #(
       MemWrite,
       MemRead,
       Branch,
-		Jump,
-		Halt,
       ALUop,
       Operation,
       opcode,
@@ -71,7 +72,11 @@ module RISC_V #(
       rd,
       addr,
       wr_data,
-      rd_data
+      rd_data,
+      J_type, //aqui
+      Jalr, //aqui
+      Jal, //aqui
+      Halt //aqui
   );
 
 endmodule

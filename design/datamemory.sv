@@ -18,7 +18,10 @@ module datamemory #(
   logic [31:0] Datain;
   logic [31:0] Dataout;
   logic [ 3:0] Wr;
-  
+  logic [7:0] auxOutS0; // sinal auxiliar carga de byte
+  logic [7:0] auxInS0; // sinal auxiliar armazenamento de byte
+  logic [15:0] aux2Out; // sinal auxiliar carga half-word
+  logic [15:0] aux2In; // sinal auxiliar armazenamento halfword
 
   Memoria32Data mem32 (
       .raddress(raddress),
@@ -26,52 +29,49 @@ module datamemory #(
       .Clk(~clk),
       .Datain(Datain),
       .Dataout(Dataout),
+      .auxOutS0(auxOutS0), // conexão
+      .auxInS0(auxInS0), // conexão
+      .aux2In(aux2In), // conexão
+      .aux2Out(aux2Out), // conexão
       .Wr(Wr)
   );
 
   always_ff @(*) begin
-    raddress = {{22{1'b0}}, a};
-    waddress = {{22{1'b0}}, {a[8:2], {2{1'b0}}}};
+    raddress = {{22{1'b0}}, a}; // ajustado
+    waddress = {{22{1'b0}}, {a[8:2], {2{1'b0}}}}; // ajustado
     Datain = wd;
     Wr = 4'b0000;
 
     if (MemRead) begin
       case (Funct3)
-		  3'b000: begin //LB
-		  if(Dataout[7] == 1)
-				rd <= {{24{1'b1}}, Dataout[7:0]};
-		  else
-				rd <= {{24{1'b0}}, Dataout[7:0]};
-		  end
-		  3'b001: begin //LH
-		  if(Dataout[7] == 1)
-				rd <={{16{1'b1}}, Dataout[15:0]};
-			else
-				rd <= {{24{1'b0}}, Dataout[15:0]};
-		  end
-		  3'b010:  //LW
-        rd <= Dataout;
-		  3'b100: //LBU
-		  rd <= {{24{1'b0}}, Dataout[7:0]};
-		  3'b101: //LHU
-		  rd <= {{24{1'b0}}, Dataout[15:0]};
+        // leitura
+        3'b010:  //LW
+        rd <= $signed(Dataout);
+        3'b000: //LB
+        rd <= $signed(auxOutS0);
+        3'b100: //LBU
+        rd <= {24'b0, auxOutS0};
+        3'b001:  //LH
+        rd <= $signed(aux2Out);
+
         default: rd <= Dataout;
       endcase
-    end
-	 else if (MemWrite) begin
+    end else if (MemWrite) begin
+      //escrita
       case (Funct3)
-        3'b000: begin //SB
-			Wr <= 4'b0001;
-			Datain <= wd[7:0];
-		  end
-		  3'b001: begin //SH
-			Wr <= 4'b0011;
-			Datain <= wd[15:0];
-		  end
-		  3'b010: begin  //SW
+        3'b010: begin  //SW
           Wr <= 4'b1111;
-          Datain <= wd;
+          Datain <= $signed(wd);
         end
+        3'b000: begin // SB
+          Wr <= 4'b0100;
+          auxInS0 <= $signed(wd);
+        end
+        3'b001: begin //SH
+          Wr <= 4'b1100;
+          aux2In <= $signed(wd);
+        end
+
         default: begin
           Wr <= 4'b1111;
           Datain <= wd;
